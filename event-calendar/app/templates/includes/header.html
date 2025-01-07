@@ -1,0 +1,57 @@
+{% load static %}
+
+<header class="fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand text-uppercase fw-bold col-md-2 me-0 d-block d-xl-none" href="#">
+                Industria
+                <img src="{% static 'images/icon.svg' %}" alt="Logo" class="logo">
+            </a>
+            <div class="collapse navbar-collapse d-md-flex" id="navbarCollapse">
+
+                <a class="navbar-brand text-uppercase fw-bold col-xl-2 me-0 d-none d-xl-block" href="#">
+                    Industria
+                    <img src="{% static 'images/icon.svg' %}" alt="Logo" class="logo">
+                </a>
+                <ul class="navbar-nav col-xl-8 justify-content-xl-center">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/' %}active{% endif %}" href="{% url 'index_industria' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/entrada_produto/' %}active{% endif %}"
+                            href="{% url 'entrada_produto' %}">Entrada de Produtos</a>
+                    </li>                    
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/produto/' %}active{% endif %}"
+                            href="{% url 'produto' %}">Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/materia_prima/' %}active{% endif %}"
+                            href="{% url 'materia_prima' %}">Materias primas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/saida_produto/' %}active{% endif %}"
+                            href="{% url 'saida_produto' %}">Saida de Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/ordem_producao/' %}active{% endif %}"
+                            href="{% url 'ordem_producao' %}">Ordem Produção</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/industria/custos/' %}active{% endif %}"
+                            href="{% url 'custo' %}">Custos</a>
+                    </li>
+                </ul>
+                <div class="d-xl-flex col-xl-2 justify-content-xl-end">
+                    {% if user.is_authenticated %}
+                        <a href="#" class="btn btn-outline-light btn-logout" role="button" id="logout">Logout</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

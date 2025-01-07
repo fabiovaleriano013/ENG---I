@@ -1,0 +1,50 @@
+{% extends 'base_industria.html' %} 
+
+{% block title %}Visualizar Saida Produto{% endblock %}
+
+{% block content %}
+<a class="btn btn-outline-success my-3" href="{% url 'saida_produto' %}" role="button">Voltar</a>
+
+<div class="card">
+    <div class="card-header text-center">
+        Saída Produto registrado em: {{ saida_produto.created_at }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title text-center">Informações da saida do produtdo</h5>
+        <p class="card-text"><strong>Fornecedor:</strong> {{ saida_produto.destinatario }}</p>
+        <p class="card-text"><strong>Numero da nota:</strong> {{ saida_produto.num_nota_saida }}</p>
+        <p class="card-text"><strong>Data e hora da saida:</strong> {{ saida_produto.data_hora }}</p>
+        <p class="card-text"><strong>Funcionário:</strong> {{ saida_produto.funcionario }}</p>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <h5 class="card-header">Produtos</h5>
+                    <div class="card-body">
+                        {% for item in saida_produto.saidaprodutoitem_set.all %}
+                        <p class="card-text"><strong>Produto {{ forloop.counter }}:</strong> {{ item.produto }}</p>
+                        <p class="card-text"><strong>Quantidade:</strong> {{ item.quantidade }}</p>
+                        <p class="card-text"><strong>Valor:</strong> {{ item.preco_compra }}</p>
+                        <hr class="border border-success border-3 opacity-75">
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-body-secondary text-end">
+        Saída: {{ saida_produto.id }}
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+    $(function () {
+        $('.inlineform').formset({
+            prefix: '{{ form_telefone.prefix }}',
+            addText: 'Adicionar nova Saída',
+            deleteText: 'Remover esta Saída'
+        });
+    });
+</script>
+{% endblock %}

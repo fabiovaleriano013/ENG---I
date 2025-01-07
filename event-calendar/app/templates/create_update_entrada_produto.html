@@ -1,0 +1,98 @@
+{% extends 'base_industria.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% if request.path == '/entrada_produto/create/' %}
+Cadastrar entrada de produto
+{% else %}
+Editar entrada de produto
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="bg-body-tertiary p-5 rounded mt-3">
+    <h1 class="text-center">
+        {% if request.path == '/industria/entrada_produto/create/' %}
+        Cadastro de Entrada de produtos
+        {% else %}
+        Atualização de Entrada de produto
+        {% endif %}
+    </h1>
+</div>
+
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show mt-3 mb-0" role="alert" id="message">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+
+<a class="btn btn-outline-success my-3" href="{% url 'entrada_produto' %}" role="button">
+    {% if request.path == '/industria/entrada_produto/create/' %}
+    Voltar
+    {% else %}
+    Cancelar
+    {% endif %}
+</a>
+
+<form action="" method="post" id="entrada_produto-form" autocomplete="off" novalidate>
+    {% csrf_token %}
+
+    <div class="card p-3">
+        <div class="row">
+            <!-- {{ form|crispy }} -->
+            <div class="col-sm-6 col-md-4 col-lg">
+                {{ entrada_produto_form.fornecedor|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg">
+                {{ entrada_produto_form.setor|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg">
+                {{ entrada_produto_form.data_hora|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg">
+                {{ entrada_produto_form.num_nota_entrada|as_crispy_field }}
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg">
+                {{ entrada_produto_form.funcionario|as_crispy_field }}
+            </div>
+        </div>
+    </div>
+
+    {{ entrada_produto_item_form.management_form }}
+
+    {% for form in entrada_produto_item_form %}
+    <hr class="border border-success border-3 opacity-75">
+    <div class="inlineform card p-3 my-3">
+        <div class="row">
+            {{ form|crispy }}
+
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="col-12 d-flex justify-content-center">
+        <button class="btn btn-success w-100 mt-3" type="submit">
+            {% if request.path == '/industria/entrada_produto/create/' %}
+            Salvar
+            {% else %}
+            Salvar Alterações
+            {% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}
+{% block javascript %}
+<script>
+    $(document).ready(function () {
+        $('.inlineform').formset({
+            prefix: '{{ entrada_produto_item_form.prefix }}',
+            addText: 'Adicionar novo Produto',
+            deleteText: 'Remover este Produto'
+        });
+    });
+</script>
+{% endblock %}

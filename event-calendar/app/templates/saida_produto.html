@@ -1,0 +1,102 @@
+{% extends 'base_industria.html' %}
+
+{% block title %}Saída de Produtos{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+{% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show mt-3 mb-0" role="alert" id="message">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+
+<a class="btn btn-outline-success my-3" href="{% url 'create_saida_produto' %}" role="button">
+    <i class="fas fa-plus me-1"></i>
+    Cadastrar
+</a>
+<!-- Table -->
+<div class="card p-3 mt-3">
+    <table class="table table-striped table-bordered nowrap align-middle text-center" id="example">
+        <caption>Lista de saída de produtos</caption>
+        <thead>
+            <tr>
+                <th scope="col">Destino</th>
+                <th scope="col">Data/hora</th>
+                <th scope="col">Nota</th>
+                <th scope="col">Funcionário</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for saida_produto in saida_produtos %}
+            <tr>
+                <td>{{ saida_produto.destinatario }}</td>
+                <td>{{ saida_produto.data_hora|date:'d/m/Y à\s H:i' }}</td>
+                <td>{{ saida_produto.num_nota_saida }}</td>
+                <td>{{ saida_produto.funcionario }}</td>
+                <td>
+                    {% for item in saida_produto.saidaprodutoitem_set.all %}
+                        {{ item.produto }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for item in saida_produto.saidaprodutoitem_set.all %}
+                        {{ item.quantidade }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for item in saida_produto.saidaprodutoitem_set.all %}
+                        {{ item.preco_saida }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'read_saida_produto' id=saida_produto.id %}" class="btn btn-outline-dark btn-sm mb-2 mb-md-0">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{% url 'update_saida_produto' id=saida_produto.id %}" class="btn btn-outline-primary btn-sm mb-2 mb-md-0">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-danger btn-sm mb-md-0 btn-delete-saida_produto" data-url="{% url 'delete_saida_produto' id=saida_produto.id %}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function () {
+        $(".btn-delete-saida_produto").on("click", function (e) {
+            e.preventDefault();
+            var link = $(this);
+            var confirmation = confirm('Tem certeza que deseja excluir esta saida?');
+
+            if (confirmation) {
+                var url = link.data('url');
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (data) {
+                        alert('Erro ao excluir saida produto.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

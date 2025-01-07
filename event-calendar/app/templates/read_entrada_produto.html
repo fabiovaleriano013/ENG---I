@@ -1,0 +1,51 @@
+{% extends 'base_industria.html' %}
+
+{% block title %}Visualizar Entrada Produto{% endblock %}
+
+{% block content %}
+<a class="btn btn-outline-success my-3" href="{% url 'entrada_produto' %}" role="button">Voltar</a>
+
+<div class="card">
+    <div class="card-header text-center">
+        Entrada Produto registrado em: {{ entrada_produto.created_at }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title text-center">Informações da entrada do produtdo</h5>
+        <p class="card-text"><strong>Fornecedor:</strong> {{ entrada_produto.fornecedor }}</p>
+        <p class="card-text"><strong>Setor:</strong> {{ entrada_produto.setor }}</p>
+        <p class="card-text"><strong>Numero da nota:</strong> {{ entrada_produto.num_nota_entrada }}</p>
+        <p class="card-text"><strong>Data e hora da entrada:</strong> {{ entrada_produto.data_hora }}</p>
+        <p class="card-text"><strong>Funcionário:</strong> {{ entrada_produto.funcionario }}</p>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <h5 class="card-header">Produtos</h5>
+                    <div class="card-body">
+                        {% for item in entrada_produto.entradaprodutoitem_set.all %}
+                        <p class="card-text"><strong>Produto {{ forloop.counter }}:</strong> {{ item.produto }}</p>
+                        <p class="card-text"><strong>Quantidade:</strong> {{ item.quantidade }}</p>
+                        <p class="card-text"><strong>Valor:</strong> {{ item.preco_compra }}</p>
+                        <hr class="border border-success border-3 opacity-75">
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-body-secondary text-end">
+        Entrada: {{ entrada_produto.id }}
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+    $(function () {
+        $('.inlineform').formset({
+            prefix: '{{ form_telefone.prefix }}',
+            addText: 'Adicionar nova Entrada',
+            deleteText: 'Remover esta Entrada'
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'base_industria.html' %}
+
+{% block title %}Produtos{% endblock %}
+
+{% block content %}
+
+{% for message in messages %}
+{% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show mt-3 mb-0" role="alert" id="message">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+
+<!-- <div class="bg-body-tertiary p-5 rounded my-3">
+    <h1 class="text-center">Produtos</h1>
+</div> -->
+
+<a class="btn btn-outline-success my-3" href="{% url 'create_produto' %}" role="button">
+    <i class="fas fa-plus me-1"></i>
+    Cadastrar Produto
+</a>
+
+<!-- Table -->
+<div class="card p-3 mt-3">
+    <table class="table table-striped table-bordered nowrap align-middle text-center" id="example" style="width: 100%;">
+        <caption>Lista de produtos</caption>
+        <thead>
+            <tr>
+                <th scope="col">Produto</th>
+                <th scope="col">U. M.</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">S.Grupo</th>
+                <th scope="col">Q.T.</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Fabricante</th>
+                <th scope="col">Estoque Max</th>
+                <th scope="col">Estoque Min</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+            <tr>
+                <td title="{{ produto.nome_produto }}">
+                    {% if produto.nome_produto|length > 7 %}
+                    {{ produto.nome_produto|slice:":7" }}...
+                    {% else %}
+                    {{ produto.nome_produto }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.unidade_medida}}">
+                    {% if produto.unidade_medida|length > 7 %}
+                    {{ produto.unidade_medida|slice:":7" }}...
+                    {% else %}
+                    {{ produto.unidade_medida }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.grupo }}">
+                    {% if produto.grupo|length > 7 %}
+                    {{ produto.grupo|slice:":7" }}...
+                    {% else %}
+                    {{ produto.grupo }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.subgrupo }}">
+                    {% if produto.subgrupo|length > 7 %}
+                    {{ produto.subgrupo|slice:":7" }}...
+                    {% else %}
+                    {{ produto.subgrupo }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.quantidade }}">
+                    {% if produto.quantidade|length > 7 %}
+                    {{ produto.quantidade|slice:":7" }}...
+                    {% else %}
+                    {{ produto.quantidade }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.tipo }}">
+                    {% if produto.tipo|length > 7 %}
+                    {{ produto.tipo|slice:":7" }}...
+                    {% else %}
+                    {{ produto.tipo }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.marca }}">
+                    {% if produto.marca|length > 7 %}
+                    {{ produto.marca|slice:":7" }}...
+                    {% else %}
+                    {{ produto.marca }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.fabricante }}">
+                    {% if produto.fabricante|length > 7 %}
+                    {{ produto.fabricante|slice:":7" }}...
+                    {% else %}
+                    {{ produto.fabricante }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.estoque_maximo }}">
+                    {% if produto.estoque_maximo|length > 7 %}
+                    {{ produto.estoque_maximo|slice:":7" }}...
+                    {% else %}
+                    {{ produto.estoque_maximo }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.estoque_minimo }}">
+                    {% if produto.estoque_minimo|length > 7 %}
+                    {{ produto.estoque_minimo|slice:":7" }}...
+                    {% else %}
+                    {{ produto.estoque_minimo }}
+                    {% endif %}
+                </td>
+                <td title="{{ produto.preco_produto }}">
+                    {% if produto.preco_produto|length > 7 %}
+                    {{ produto.preco_produto|slice:":7" }}...
+                    {% else %}
+                    {{ produto.preco_produto }}
+                    {% endif %}
+                </td>
+                <td>    
+                    <a href="{% url 'update_produto' id=produto.id %}" class="btn btn-outline-primary btn-sm mb-2 mb-md-0">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-danger btn-sm mb-md-0 btn-delete-produto" data-url="{% url 'delete_produto' id=produto.id %}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function () {
+        $(".btn-delete-produto").on("click", function (e) {
+            e.preventDefault();
+            var link = $(this);
+            var confirmation = confirm('Tem certeza que deseja excluir este prouto');
+
+            if (confirmation) {
+                var url = link.data('url');
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (data) {
+                        alert('Erro ao excluir produto.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
