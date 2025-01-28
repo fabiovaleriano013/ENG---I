@@ -68,7 +68,7 @@ $(document).ready(function () {
         lastMb3.hide();
     });
 
-    $('.inlineform-produto').each(function () {
+    $('.inlineform-contato').each(function () {
         var lastMb3 = $(this).find('.row .mb-3:last');
         lastMb3.hide();
     });

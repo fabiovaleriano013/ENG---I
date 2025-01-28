@@ -19,32 +19,14 @@
                 </a>
                 <ul class="navbar-nav col-xl-8 justify-content-xl-center">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/' %}active{% endif %}" href="{% url 'index_industria' %}">Home</a>
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
                     </li>
+                                        
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/entrada_produto/' %}active{% endif %}"
-                            href="{% url 'entrada_produto' %}">Entrada de Produtos</a>
-                    </li>                    
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/produto/' %}active{% endif %}"
-                            href="{% url 'produto' %}">Produtos</a>
+                        <a class="nav-link {% if request.path == 'produto' %}active{% endif %}"
+                            href="{% url 'contato' %}">Contatos</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/materia_prima/' %}active{% endif %}"
-                            href="{% url 'materia_prima' %}">Materias primas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/saida_produto/' %}active{% endif %}"
-                            href="{% url 'saida_produto' %}">Saida de Produtos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/ordem_producao/' %}active{% endif %}"
-                            href="{% url 'ordem_producao' %}">Ordem Produção</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/industria/custos/' %}active{% endif %}"
-                            href="{% url 'custo' %}">Custos</a>
-                    </li>
+                    
                 </ul>
                 <div class="d-xl-flex col-xl-2 justify-content-xl-end">
                     {% if user.is_authenticated %}

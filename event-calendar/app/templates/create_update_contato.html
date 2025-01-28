@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% if request.path == 'contato/create/' %}
+Cadastrar contato
+{% else %}
+Editar contato
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="bg-body-tertiary p-5 rounded mt-3">
+    <h1 class="text-center">
+        {% if request.path == 'contato/create/' %}
+        Cadastro de contato
+        {% else %}
+        Atualização de contato
+        {% endif %}
+    </h1>
+</div>
+
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show mt-3 mb-0" role="alert" id="message">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+
+<a class="btn btn-outline-success my-3" href="{% url 'contato' %}" role="button">
+    {% if request.path == 'contato/create/' %}
+    Voltar
+    {% else %}
+    Cancelar
+    {% endif %}
+</a>
+<div class="card p-3">
+    <form action="" method="post" id="contato-form" autocomplete="off" novalidate>
+        {% csrf_token %}
+        <div class="row">
+           
+
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                {{ contato_form.country_code|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                {{ contato_form.first_name|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                {{ contato_form.last_name|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                {{ contato_form.phone_number|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                {{ contato_form.is_favorite|as_crispy_field }}
+            </div>
+
+            
+            
+        </div>
+        <!-- Botão de salvar -->
+        <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="btn btn-outline-success w-100 mt-3">
+                {% if request.path == 'contato/create/' %}
+                Salvar
+                {% else %}
+                Salvar
+                {% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}
